@@ -64,7 +64,48 @@ const ASSESSMENT_STEPS = [
     prompt: "Begin a short set. Pause if distress becomes overwhelming.",
   },
 ];
-
+const CONTAINER_STEPS = [
+  {
+    title: "Container Specifications",
+    prompt:
+      "I’d like you to develop a container that will help you manage some of the troublesome feelings and memories you have. The container should be strong enough to hold whatever you put into it. It should have a two-way system that allows you to put things in and take things out without anything else escaping. It should also allow you to take out only as much of any given problem as you want. The inside should be comfortable enough that the material you put into it will be willing to stay there until you are ready to work with it.",
+  },
+  {
+    title: "Container Description",
+    prompt:
+      "Take a moment to think about what your container will look like. There is no right answer. What do you get?",
+  },
+  {
+    title: "Emotions and Sensations",
+    prompt:
+      "If you knew your container could hold some of your troublesome feelings and memories, how would you feel?",
+  },
+  {
+    title: "Enhance the Container",
+    prompt:
+      "Focus on your container and those good feelings. Use 6 to 8 slow bilateral stimulation passes. Then ask: What do you notice now?",
+  },
+  {
+    title: "Cue Word",
+    prompt:
+      "What word or words best describe your container? Think of that word and the positive emotions and sensations it produces, and follow my fingers.",
+  },
+  {
+    title: "Cueing with Disturbance",
+    prompt:
+      "Now imagine some mildly disturbing recent memory and notice how your body feels. Imagine putting that memory into your container. Notice how differently it feels.",
+  },
+  {
+    title: "Putting Presenting Problems Away",
+    prompt:
+      "Now imagine another mildly disturbing incident and imagine putting it into the container without my assistance. How did that work?",
+  },
+  {
+    title: "Using the Container",
+    prompt:
+      "I’d like you to practice using your container whenever you feel stressed. We’ll check next time and see how it worked.",
+  },
+];
 const INITIAL_USERS = [
   {
     id: 1,
@@ -591,6 +632,7 @@ function SessionPage({
         <AssessmentPanel
           assessmentStep={assessmentStep}
           setAssessmentStep={setAssessmentStep}
+                    techniqueId={selectedTechnique.id}
         />
       )}
 
@@ -613,14 +655,23 @@ function SessionPage({
   );
 }
 
-function AssessmentPanel({ assessmentStep, setAssessmentStep }) {
-  const step = ASSESSMENT_STEPS[assessmentStep];
+function AssessmentPanel({
+  assessmentStep,
+  setAssessmentStep,
+  techniqueId,
+}) {
+  const steps =
+  techniqueId === "container"
+    ? CONTAINER_STEPS
+    : ASSESSMENT_STEPS;
+
+const step = steps[assessmentStep];
 
   return (
     <div className="max-w-3xl mx-auto mb-10 bg-slate-900/70 border border-blue-400/20 rounded-2xl p-5">
       <div className="text-center mb-5">
         <div className="text-sm text-blue-300 mb-2">
-          Assessment Step {assessmentStep + 1} of {ASSESSMENT_STEPS.length}
+          Assessment Step {assessmentStep + 1} of {steps.length}
         </div>
 
         <div className="text-2xl font-semibold">{step.title}</div>
@@ -641,7 +692,7 @@ function AssessmentPanel({ assessmentStep, setAssessmentStep }) {
         <button
           onClick={() =>
             setAssessmentStep((currentStep) =>
-              Math.min(ASSESSMENT_STEPS.length - 1, currentStep + 1)
+              Math.min(steps.length - 1, currentStep + 1)
             )
           }
           className="bg-blue-500 hover:bg-blue-400 px-6 py-3 rounded-xl"

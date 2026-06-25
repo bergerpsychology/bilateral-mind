@@ -49,7 +49,7 @@ const ASSESSMENT_STEPS = [
   },
   {
     title: "VOC Rating",
-    prompt: "How true does the positive belief feel now, from 1 to 7?",
+    prompt: "When you think about that picture or incident, how true do those words (repeat PC) feel to you now on a scale from 1 to 7, where 1 is completely false and 7 is completely true?",
   },
   {
     title: "Emotions",
@@ -586,7 +586,8 @@ function SessionPage({
         )}
       </div>
 
-      {mode === "clinical" && (
+      {mode === "clinical" &&
+ selectedTechnique?.id === "presenting-memory" && (
         <AssessmentPanel
           assessmentStep={assessmentStep}
           setAssessmentStep={setAssessmentStep}
